@@ -1,6 +1,7 @@
 package com.example.webview
 
 import android.os.Bundle
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
@@ -17,8 +18,19 @@ class MainActivity : AppCompatActivity() {
         // Initialize the WebView
         webView = findViewById(R.id.webview)
 
+        // Enable JavaScript
+        val webSettings = webView.settings
+        webSettings.javaScriptEnabled = true  // Enable JavaScript
+
+        // Enable local storage (for websites that store data locally)
+        webSettings.domStorageEnabled = true
+
         // Prevent opening in the default browser
-        webView.webViewClient = WebViewClient()
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                return false
+            }
+        }
 
         // Load the website
         webView.loadUrl("https://www.canva.com/")
