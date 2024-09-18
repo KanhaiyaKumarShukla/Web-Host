@@ -3,6 +3,7 @@ package com.example.webview
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,7 +21,19 @@ class MainActivity : AppCompatActivity() {
         webView.webViewClient = WebViewClient()
 
         // Load the website
-        webView.loadUrl("https://www.canva.com/en_in/?msockid=3dc01166608660ed1b37021c61f16127")
+        webView.loadUrl("https://www.canva.com/")
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (webView.canGoBack()) {
+                    webView.goBack()  // Navigate back in WebView history
+                } else {
+                    isEnabled = false  // Disable this callback if no history in WebView
+                    onBackPressedDispatcher.onBackPressed()  // Use system back press behavior
+                }
+            }
+        })
 
     }
+
 }
